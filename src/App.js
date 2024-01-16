@@ -37,15 +37,18 @@ const initialFacts = [
 
 function App() {
   const [showForm, setShowForm] = useState(false);
+  const [facts, setFacts] = useState(initialFacts);
 
   return (
     <>
       <Header showForm={showForm} setShowForm={setShowForm} />
-      {showForm ? <NewFactForm /> : null}
+      {showForm ? (
+        <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
+      ) : null}
 
       <main className="main">
         <CategoryFilter />
-        <FactList />
+        <FactList facts={facts} />
       </main>
     </>
   );
@@ -78,14 +81,46 @@ const CATEGORIES = [
   { name: "news", color: "#8b5cf6" },
 ];
 
-function NewFactForm() {
+function isValidHttpUrl(string) {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
+function NewFactForm({ setFacts, setShowForm }) {
   const [text, setText] = useState("");
-  const [source, setSource] = useState("");
+  const [source, setSource] = useState("http://example.com");
   const [category, setCategory] = useState("");
   const textLength = text.length;
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(text, source, category);
+    if (text.length <= 200 && isValidHttpUrl(source) && category) {
+      const newFact = {
+        id: Math.round(Math.random() * 100),
+        text: text,
+        source: source,
+        category: category,
+        votesInteresting: 0,
+        votesMindblowing: 0,
+        votesFalse: 0,
+        createdIn: new Date().getFullYear(),
+      };
+      setFacts((facts) => [newFact, ...facts]);
+
+      setText("");
+      setSource("");
+      setCategory("");
+
+      setShowForm(false);
+    }
   }
 
   return (
@@ -103,10 +138,7 @@ function NewFactForm() {
         value={source}
         onChange={(e) => setSource(e.target.value)}
       />
-      <select
-        value={category}
-        onChange={(e) => setCategory(e.target.validationMessage)}
-      >
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="">Choose category:</option>
         {CATEGORIES.map((cat) => (
           <option key={cat.name} value={cat.name}>
@@ -141,8 +173,7 @@ function CategoryFilter() {
   );
 }
 
-function FactList() {
-  const facts = initialFacts;
+function FactList({ facts }) {
   return (
     <section>
       <ul className="fact-list">
