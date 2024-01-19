@@ -117,6 +117,9 @@ h1 {
 .vote-buttons button:hover{
     background-color: #292524;
 }
+.vote-buttons button:disabled{
+    background-color: #292520;
+}
 .tag{
     font-size: 14px;
     text-transform: uppercase;
