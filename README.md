@@ -3,6 +3,8 @@
 
 This project is a simple web application that allows users to record information they learn daily, including the source and category. Users can also share their posts, and others can react to the shared information.
 
+<img src="v1/today-i-learned-overview.png" alt="Overview" width="800"/>
+
 ## Features
 
 - Ability to enter information, source, and category
