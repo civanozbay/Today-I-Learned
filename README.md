@@ -14,7 +14,7 @@ This project is a simple web application that allows users to record information
 
 1. Clone this repository to your computer.
    ```bash
-   git clone https://github.com/your-username/Today-i-learned.git
+   git clone https://github.com/civanozbay/Today-I-Learned.git
 Navigate to the project directory.
 ```bash
   cd Today-i-learned
